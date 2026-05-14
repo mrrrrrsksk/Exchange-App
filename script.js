@@ -1,156 +1,162 @@
 let inputs = document.querySelectorAll("input");
 let input1 = document.getElementById("inp1");
 let input2 = document.getElementById("inp2");
+
 let btngrp = document.querySelectorAll(".btngroup");
+
 let btngrs1 = document.querySelectorAll(".btngroup1 button");
 let btngrs2 = document.querySelectorAll(".btngroup2 button");
 let btngrs3 = document.querySelectorAll(".btngroup3 button");
+
 let rightp = document.getElementById("rightp");
 let leftp = document.getElementById("leftp");
+
 let qiyb = document.querySelector(".qiyb p");
 let qiys = document.querySelector(".qiys p");
-let salam = document.querySelector(".salam");
+
+let activeteref = 1
 let secim1 = "AUD";
 let secim2 = "USD";
 let secim3 = "NEW";
-let inp1 = 100;
+
+let inp1;
 let inp2;
 
-exchange(secim1, secim2, secim3, 100, 0);
+exchange(input1.value, secim1, secim2, secim3, 1)
 
 const banks = {
-    "ABC": {
+    ABC: {
         buy: 0.01,
-        sell: -0.005
+        sell: -0.005,
     },
-    "NEW": {
+
+    NEW: {
         buy: 0.02,
-        sell: -0.01
+        sell: -0.01,
     },
-    "AME": {
+
+    AME: {
         buy: 0.015,
-        sell: -0.015
+        sell: -0.015,
     },
-    "RED": {
+
+    RED: {
         buy: 0.005,
-        sell: -0.005
-    }
+        sell: -0.005,
+    },
 };
 
-inputs.forEach(a => {
+inputs.forEach((a) => {
     a.addEventListener("input", () => {
-        a.value = a.value > 10000 ? 10000 : +a.value;
+        let ind = a.value.indexOf('.')
+        if (ind != -1) {
+            let decimal = a.value.slice(ind + 1);
+            if (decimal.length > 4) {
+                a.value = a.value.slice(0, ind + 5);
+            }
+        }
+        if (+a.value > 10000) {
+            a.value = 10000;
+        }
     });
 });
 
-btngrs1.forEach(a => {
+btngrs1.forEach((a) => {
     a.addEventListener("click", () => {
-        btngrs1.forEach(b => {
+        btngrs1.forEach((b) => {
             b.classList.remove("active");
         });
+        activeteref = 1
         a.classList.add("active");
         secim1 = a.innerHTML;
-        exchange(secim2, secim1, secim3, input2.value, 1);
+        exchange(input2.value, secim2, secim1, secim3, 2)
     });
 });
 
-btngrs2.forEach(a => {
+btngrs2.forEach((a) => {
     a.addEventListener("click", () => {
-        btngrs2.forEach(b => {
+        btngrs2.forEach((b) => {
             b.classList.remove("active");
         });
         a.classList.add("active");
         secim2 = a.innerHTML;
-        exchange(secim1, secim2, secim3, input1.value, 0);
+        activeteref = 2
+        exchange(input1.value, secim1, secim2, secim3, 1)
     });
 });
 
-btngrs3.forEach(a => {
+btngrs3.forEach((a) => {
     a.addEventListener("click", () => {
-        btngrs3.forEach(b => {
+        btngrs3.forEach((b) => {
             b.classList.remove("active");
         });
         a.classList.add("active");
         secim3 = a.innerHTML;
-        exchange(secim2, secim1, secim3, input2.value, 1);
+        if (activeteref == 1) {
+            exchange(input1.value, secim1, secim2, secim3, 1);
+        } else {
+            exchange(input2.value, secim2, secim1, secim3, 2);
+        }
     });
 });
 
 input1.addEventListener("input", () => {
-    exchange(secim1, secim2, secim3, input1.value, 0);
+    exchange(input1.value, secim1, secim2, secim3, 1)
+    activeteref = 1
 });
 
 input2.addEventListener("input", () => {
-    exchange(secim2, secim1, secim3, input2.value, 1);
+    exchange(input2.value, secim2, secim1, secim3, 2)
+    activeteref = 2
 });
 
-function exchange(secim1, secim2, secim3, input, h) {
-    if (secim1 == secim2) {
-        if (h == 0) {
-            input2.value = input1.value;
-        } else {
-            input1.value = input2.value;
-        }
-        rightp.innerHTML = `1 ${secim1} = 1 ${secim2}`;
-        leftp.innerHTML = `1 ${secim1} = 1 ${secim2}`;
-        qiyb.innerHTML =
-            (input - (input * banks[secim3].buy)).toFixed(2);
-        qiys.innerHTML =
-            (input - (input * banks[secim3].sell)).toFixed(2);
-        return;
-    }
-    let key = `${secim1}_${secim2}`;
-    let url =
-        `https://api.frankfurter.dev/v1/latest?amount=${input}&base=${secim1}&symbols=${secim2}`;
-    fetch(url)
-        .then((resp) => {
-            if (!resp.ok) {
-                throw new Error("API xətası");
-            }
-            return resp.json();
-        })
-        .then((data) => {
-            salam.innerHTML = "";
-            let result = data.rates[secim2];
-            let rate = (result / input).toFixed(4);
-            localStorage.setItem(key, JSON.stringify({
-                result,
-                rate
-            }));
-            if (h == 0) {
-                input2.value = result.toFixed(4);
-                rightp.innerHTML =
-                    `1 ${secim1} = ${rate} ${secim2}`;
-                leftp.innerHTML =
-                    `1 ${secim2} = ${(1 / rate).toFixed(4)} ${secim1}`;
-            } else {
-                input1.value = result.toFixed(4);
-                leftp.innerHTML =
-                    `1 ${secim1} = ${rate} ${secim2}`;
-                rightp.innerHTML =
-                    `1 ${secim2} = ${(1 / rate).toFixed(4)} ${secim1}`;
-            }
-            qiyb.innerHTML =
-                (input - (input * banks[secim3].buy)).toFixed(2);
-            qiys.innerHTML =
-                (input - (input * banks[secim3].sell)).toFixed(2);
-        })
-        .catch(() => {
-            let saved = localStorage.getItem(key);
-            if (saved) {
-                saved = JSON.parse(saved);
-                let result = saved.rate * input;
-                if (h == 0) {
-                    input2.value = result.toFixed(4);
+function exchange(qiymet, hardan, hara, bank, teref) {
+    if (hardan != hara && qiymet != 0 && qiymet != "") {
+        fetch(
+            `https://api.frankfurter.dev/v1/latest?amount=${qiymet}&base=${hardan}&symbols=${hara}`
+        )
+            .then((resp) => resp.json())
+            .then((data) => {
+                qiyb.innerHTML = (qiymet - qiymet * banks[bank].buy).toFixed(2);
+                qiys.innerHTML = (qiymet - qiymet * banks[bank].sell).toFixed(2);
+
+                if (teref == 1) {
+                    let rate = (data.rates[hara] / qiymet).toFixed(4);
+                    leftp.innerHTML = `1 ${hara} = ${rate} ${hardan}`;
+                    rightp.innerHTML = `1 ${hardan} = ${rate} ${hara}`;
+                    input2.value = data.rates[hara].toFixed(4);
                 } else {
-                    input1.value = result.toFixed(4);
+                    let rate = (data.rates[hara] / qiymet).toFixed(4);
+                    leftp.innerHTML = `1 ${hara} = ${rate} ${hardan}`;
+                    rightp.innerHTML = `1 ${hardan} = ${rate} ${hara}`;
+                    input1.value = data.rates[hara].toFixed(4);
                 }
-                salam.innerHTML =
-                    "Offline məlumat istifadə olunur";
-            }
-            else {
-                salam.innerHTML =
-                    "API əlçatmazdır və ya xəta baş verdi";
-            }
-        });
+            })
+    } else if (qiymet == "") {
+        qiyb.innerHTML = "";
+        qiys.innerHTML = "";
+        if (teref == 1) {
+            input2.value = "";
+        } else {
+            input1.value = "";
+        }
+    }
+
+    else if (qiymet == 0) {
+        qiyb.innerHTML = 0;
+        qiys.innerHTML = 0;
+        if (teref == 1) {
+            input2.value = 0;
+        } else {
+            input1.value = 0;
+        }
+    } else {
+        qiyb.innerHTML = (qiymet - qiymet * banks[bank].buy).toFixed(2);
+        qiys.innerHTML = (qiymet - qiymet * banks[bank].sell).toFixed(2);
+        if (teref == 1) {
+            input2.value = qiymet;
+        } else {
+            input1.value = qiymet;
+        }
+    }
 }
