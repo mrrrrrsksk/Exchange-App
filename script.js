@@ -94,7 +94,7 @@ function exchange(secim1, secim2, secim3, input, h) {
         rightp.innerHTML = `1 ${secim1} = 1 ${secim2}`;
         leftp.innerHTML = `1 ${secim1} = 1 ${secim2}`;
         qiyb.innerHTML =
-            (input - (input * banks[secim3].buy)).toFixed(4);
+            (input - (input * banks[secim3].buy)).toFixed(2);
         qiys.innerHTML =
             (input - (input * banks[secim3].sell)).toFixed(2);
         return;
