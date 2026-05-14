@@ -1,0 +1,304 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+}
+
+html {
+    font-size: 1vw;
+}
+
+body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.active {
+    background-color: #833ae0 !important;
+    color: #fff !important;
+}
+
+.container {
+    width: 100%;
+    padding: 1.3vw 6vw;
+}
+
+nav {
+    background-color: #f5f5f5;
+    width: 100%;
+}
+
+nav .container {
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+}
+
+nav img {
+    width: 8vw;
+    min-width: 6rem;
+}
+
+nav button {
+    margin-left: auto;
+    width: 4vw;
+    min-width: 4rem;
+    height: 2.3vw;
+    min-height: 2.3rem;
+    border: none;
+    background-color: #fff;
+    border-radius: .3vw;
+    font-size: .8vw;
+    cursor: pointer;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2vw;
+    flex-wrap: wrap;
+}
+
+nav ul li a {
+    font-size: .8vw;
+    text-decoration: none;
+    color: #959BA4;
+    font-weight: bold;
+}
+
+nav ul li:first-child a {
+    color: #000;
+}
+
+h1 {
+    margin: 5vw 6vw 2vw;
+    font-size: 2.5vw;
+}
+
+main .container {
+    display: flex;
+    gap: 3vw;
+    flex-wrap: wrap;
+}
+
+article {
+    flex: 1 1 25vw;
+    min-width: 18rem;
+}
+
+article>p {
+    color: #9f9f9f;
+    margin-bottom: .8vw;
+    font-size: 1.5em;
+}
+
+.btngroup {
+    display: flex;
+    width: 100%;
+}
+
+.btngroup button {
+    width: 25%;
+    height: 2.5vw;
+    min-height: 2.5rem;
+    color: #c6c6c6;
+    border: .07vw solid #9f9f9f;
+    background-color: white;
+    font-size: .9vw;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.btngroup button:first-child {
+    border-radius: .3vw 0 0 .3vw;
+}
+
+.btngroup button:last-child {
+    border-radius: 0 .3vw .3vw 0;
+}
+
+.btngroup button:nth-child(1),
+.btngroup button:nth-child(2),
+.btngroup button:nth-child(3) {
+    border-right: none;
+}
+
+.netice {
+    margin-top: 1.5vw;
+    padding: 1vw;
+    border-radius: .3vw;
+    border: .07vw solid #e5e5e5;
+    min-height: 7vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.netice input {
+    width: 100%;
+    font-size: 2.5vw;
+    font-weight: bold;
+    outline: none;
+    border: none;
+}
+
+.netice p:nth-child(2) {
+    font-size: .8vw;
+    color: #c6c6c6;
+}
+
+.netices,
+.neticeb {
+    min-height: 6vw;
+    margin-top: 1.5vw;
+    display: flex;
+}
+
+.textb,
+.texts {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #833ae0;
+    font-size: 1.5vw;
+    color: transparent;
+    -webkit-text-stroke: .07vw white;
+}
+
+.qiyb,
+.qiys {
+    width: 80%;
+    font-size: 2vw;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding-left: 2vw;
+    border: .07vw solid #e5e5e5;
+}
+
+.btngroup button:hover {
+    background-color: #833ae0;
+    color: #fff;
+}
+
+.salam{
+    color: red;
+    font-size: 3em;
+}
+
+@media only screen and (max-width: 950px) {
+
+    html {
+        font-size: 1.8vw;
+    }
+
+    nav ul {
+        display: none;
+    }
+
+    nav .container {
+        justify-content: space-between;
+    }
+
+    nav button {
+        margin-left: 0;
+    }
+
+    h1 {
+        font-size: 4vw;
+    }
+
+    main .container {
+        flex-direction: column;
+    }
+
+    article {
+        width: 100%;
+    }
+
+    .btngroup button {
+        font-size: 1.5vw;
+    }
+
+    .netice input {
+        font-size: 4vw;
+    }
+
+    .netice p:nth-child(2) {
+        font-size: 1.3vw;
+    }
+
+    .textb,
+    .texts {
+        font-size: 2vw;
+    }
+
+    .qiyb,
+    .qiys {
+        font-size: 3vw;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+
+    html {
+        font-size: 2.5vw;
+    }
+
+    .container {
+        padding: 3vw 5vw;
+    }
+
+    h1 {
+        font-size: 6vw;
+        margin: 6vw 5vw;
+    }
+
+    nav img {
+        width: 20vw;
+    }
+
+    nav button {
+        width: 15vw;
+        height: 8vw;
+        font-size: 2.5vw;
+    }
+
+    .btngroup button {
+        height: 9vw;
+        font-size: 2.5vw;
+    }
+
+    .netice {
+        min-height: 24vw;
+        padding: 3vw;
+    }
+
+    .netice input {
+        font-size: 7vw;
+    }
+
+    .netice p:nth-child(2) {
+        font-size: 2.5vw;
+    }
+
+    .netices,
+    .neticeb {
+        min-height: 18vw;
+    }
+
+    .textb,
+    .texts {
+        font-size: 4vw;
+    }
+
+    .qiyb,
+    .qiys {
+        font-size: 5vw;
+        padding-left: 4vw;
+    }
+}
