@@ -13,8 +13,10 @@ let salam = document.querySelector(".salam");
 let secim1 = "AUD";
 let secim2 = "USD";
 let secim3 = "NEW";
-let inp1;
+let inp1 = 100;
 let inp2;
+
+exchange(secim1, secim2, secim3, 100, 0);
 
 const banks = {
     "ABC": {
