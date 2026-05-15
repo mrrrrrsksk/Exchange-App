@@ -11,6 +11,7 @@ let btngrs3 = document.querySelectorAll(".btngroup3 button");
 let rightp = document.getElementById("rightp");
 let leftp = document.getElementById("leftp");
 
+let error = document.getElementById("error")
 let qiyb = document.querySelector(".qiyb p");
 let qiys = document.querySelector(".qiys p");
 
@@ -115,21 +116,55 @@ function exchange(qiymet, hardan, hara, bank, teref) {
         fetch(
             `https://api.frankfurter.dev/v1/latest?amount=${qiymet}&base=${hardan}&symbols=${hara}`
         )
-            .then((resp) => resp.json())
+            .then((resp) => 
+                resp.json())
             .then((data) => {
+                error.style.display = "none"
                 qiyb.innerHTML = (qiymet - qiymet * banks[bank].buy).toFixed(2);
                 qiys.innerHTML = (qiymet - qiymet * banks[bank].sell).toFixed(2);
-
+                let rate = (data.rates[hara] / qiymet).toFixed(4);
                 if (teref == 1) {
-                    let rate = (data.rates[hara] / qiymet).toFixed(4);
                     leftp.innerHTML = `1 ${hara} = ${rate} ${hardan}`;
                     rightp.innerHTML = `1 ${hardan} = ${rate} ${hara}`;
                     input2.value = data.rates[hara].toFixed(4);
                 } else {
-                    let rate = (data.rates[hara] / qiymet).toFixed(4);
                     leftp.innerHTML = `1 ${hara} = ${rate} ${hardan}`;
                     rightp.innerHTML = `1 ${hardan} = ${rate} ${hara}`;
                     input1.value = data.rates[hara].toFixed(4);
+                }
+
+                localStorage.setItem(`${hardan}_${hara}`, rate);
+            }).catch(() => {
+                error.style.display = "inline";
+                let savedRate = localStorage.getItem(`${hardan}_${hara}`);
+                if (savedRate && !isNaN(savedRate)) {
+                    let currentRate = Number(savedRate);
+                    qiyb.innerHTML = (
+                        qiymet - qiymet * banks[bank].buy
+                    ).toFixed(2);
+                    qiys.innerHTML = (
+                        qiymet - qiymet * banks[bank].sell
+                    ).toFixed(2);
+                    leftp.innerHTML =
+                        `1 ${hardan} = ${currentRate.toFixed(4)} ${hara}`;
+                    rightp.innerHTML =
+                        `1 ${hara} = ${(1 / currentRate).toFixed(4)} ${hardan}`;
+                    let result = Number(qiymet) * currentRate;
+                    if (teref == 1) {
+                        input2.value = result.toFixed(4);
+                    } else {
+                        input1.value = result.toFixed(4);
+                    }
+                } else {
+                    if (teref == 1) {
+                        error.innerHTML = "Data tapılmadı";
+                    } else {
+                        error.innerHTML = "Data tapılmadı";
+                    }
+                    leftp.innerHTML = "localStorage-da məlumat yoxdur";
+                    rightp.innerHTML = "localStorage-da məlumat yoxdur";
+                    qiyb.innerHTML = "Data tapılmadı";
+                    qiys.innerHTML = "Data tapılmadı";
                 }
             })
     } else if (qiymet == "") {

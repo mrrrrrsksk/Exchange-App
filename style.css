@@ -185,9 +185,13 @@ article>p {
     color: #fff;
 }
 
-.salam{
-    color: red;
-    font-size: 3em;
+#error{
+    color: #fff;
+    background-color: red;
+    font-size: 2em;
+    margin: 1.3vw 6vw;
+    padding: 1vw 3vw;
+    display: inline;
 }
 
 @media only screen and (max-width: 950px) {
