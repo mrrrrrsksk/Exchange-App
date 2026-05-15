@@ -116,7 +116,7 @@ function exchange(qiymet, hardan, hara, bank, teref) {
         fetch(
             `https://api.frankfurter.dev/v1/latest?amount=${qiymet}&base=${hardan}&symbols=${hara}`
         )
-            .then((resp) => 
+            .then((resp) =>
                 resp.json())
             .then((data) => {
                 error.style.display = "none"
@@ -130,12 +130,12 @@ function exchange(qiymet, hardan, hara, bank, teref) {
                     rightp.innerHTML = `1 ${hardan} = ${rate} ${hara}`;
                     input1.value = data.rates[hara].toFixed(4);
                 }
-                
+
                 qiyb.innerHTML = (data.rates[hara] - data.rates[hara] * banks[bank].buy).toFixed(2);
                 qiys.innerHTML = (data.rates[hara] - data.rates[hara] * banks[bank].sell).toFixed(2);
-            
-                localStorage.setItem(`${hardan}_${hara}`, rate); 
-            
+
+                localStorage.setItem(`${hardan}_${hara}`, rate);
+
             }).catch(() => {
                 error.style.display = "inline";
                 let savedRate = localStorage.getItem(`${hardan}_${hara}`);
@@ -159,14 +159,14 @@ function exchange(qiymet, hardan, hara, bank, teref) {
                     }
                 } else {
                     if (teref == 1) {
-                        error.innerHTML = "Data tapılmadı";
+                        error.innerHTML = "Data yoxdur";
                     } else {
-                        error.innerHTML = "Data tapılmadı";
+                        error.innerHTML = "Data yoxdur";
                     }
-                    leftp.innerHTML = "localStorage-da məlumat yoxdur";
-                    rightp.innerHTML = "localStorage-da məlumat yoxdur";
-                    qiyb.innerHTML = "Data tapılmadı";
-                    qiys.innerHTML = "Data tapılmadı";
+                    leftp.innerHTML = "Data yoxdur";
+                    rightp.innerHTML = "Data yoxdur";
+                    qiyb.innerHTML = "Data yoxdur";
+                    qiys.innerHTML = "Data yoxdur";
                 }
             })
     } else if (qiymet == "") {
