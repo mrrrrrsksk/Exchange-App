@@ -120,8 +120,6 @@ function exchange(qiymet, hardan, hara, bank, teref) {
                 resp.json())
             .then((data) => {
                 error.style.display = "none"
-                qiyb.innerHTML = (qiymet - qiymet * banks[bank].buy).toFixed(2);
-                qiys.innerHTML = (qiymet - qiymet * banks[bank].sell).toFixed(2);
                 let rate = (data.rates[hara] / qiymet).toFixed(4);
                 if (teref == 1) {
                     leftp.innerHTML = `1 ${hara} = ${rate} ${hardan}`;
@@ -132,8 +130,12 @@ function exchange(qiymet, hardan, hara, bank, teref) {
                     rightp.innerHTML = `1 ${hardan} = ${rate} ${hara}`;
                     input1.value = data.rates[hara].toFixed(4);
                 }
-
-                localStorage.setItem(`${hardan}_${hara}`, rate);
+                
+                qiyb.innerHTML = (data.rates[hara] - data.rates[hara] * banks[bank].buy).toFixed(2);
+                qiys.innerHTML = (data.rates[hara] - data.rates[hara] * banks[bank].sell).toFixed(2);
+            
+                localStorage.setItem(`${hardan}_${hara}`, rate); 
+            
             }).catch(() => {
                 error.style.display = "inline";
                 let savedRate = localStorage.getItem(`${hardan}_${hara}`);
